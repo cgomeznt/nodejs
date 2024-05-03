@@ -264,13 +264,17 @@ Por ultimo, nos vamos a un navegador y colocamos la IP en donde esta corriedo el
 	
 Listo...!!!
 
-Crear una imagen de Docker tipo PROD
+Crear una imagen de Docker tipo PROD con nginx
 +++++++++++++++++++++++++++
 
 Con este contenedor vamos aplicar las buenas practicas y es que vamos a compilar el codigo fuente y luego lo agregamos, para eso vamos a utilizar la tecnica de
 Multi Stage, en donde vamos a compilar en una base node y luego ese contenido lo copiamos en una base de nginx. para mayor información podemos ver el siguiente link oficial.
 
 https://docs.docker.com/build/building/multi-stage/
+
+Solo de practica creamos un archivo en el directorio raiz::
+
+	# touch myfile
 
 Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
 
@@ -286,6 +290,7 @@ Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
 
 	### STAGE 2: Run ###
 	FROM nginx:1.17.1-alpine
+	COPY ./myfile /usr/share/nginx/html/
 	COPY --from=build /usr/src/app/dist/* /usr/share/nginx/html/
 
 
@@ -342,13 +347,140 @@ Consultamos el contenedor::
 Si queremos ingresar al contenedor::
 
 	# docker exec -ti my-angular-container-prod sh
-	/ # netstat -nat
-	Active Internet connections (servers and established)
-	Proto Recv-Q Send-Q Local Address           Foreign Address         State
+	/ # netstat -nat | grep -i listen
 	tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN
 	/ #
+	/ # ls -l /usr/share/nginx/html/
+	total 276
+	-rw-r--r--    1 root     root         12290 May  3 20:39 3rdpartylicenses.txt
+	-rw-r--r--    1 root     root           494 Jun 25  2019 50x.html
+	-rw-r--r--    1 root     root           948 May  3 20:39 favicon.ico
+	-rw-r--r--    1 root     root           576 May  3 20:39 index.html
+	-rw-r--r--    1 root     root        212311 May  3 20:39 main.4f35e316a07c6c38.js
+	-rw-r--r--    1 root     root             0 May  3 17:26 myfile
+	-rw-r--r--    1 root     root         33833 May  3 20:39 polyfills.18bdebce9c7ddf4a.js
+	-rw-r--r--    1 root     root           910 May  3 20:39 runtime.219646590b153ac0.js
+	-rw-r--r--    1 root     root             0 May  3 20:39 styles.ef46db3751d8e999.css
+	/ #
+
 
 	
-Por ultimo, nos vamos a un navegador y colocamos la IP en donde esta corriedo el contenedor con el puerto 8080::
+Por ultimo, nos vamos a un navegador y colocamos la IP en donde esta corriedo el contenedor con el puerto 8080, 
+ya como colocamos una imagen de nginx el puerto en listen es el 80 dentro del contenedor::
+
+	http://10.134.3.35:8080/
+	
+Listo...!!!
 
 
+
+
+
+
+
+
+Crear una imagen de Docker tipo PROD con nginx
++++++++++++++++++++++++++++
+
+Con este contenedor vamos aplicar las buenas practicas y es que vamos a compilar el codigo fuente y luego lo agregamos, para eso vamos a utilizar la tecnica de
+Multi Stage, en donde vamos a compilar en una base node y luego ese contenido lo copiamos en una base de nginx. para mayor información podemos ver el siguiente link oficial.
+
+https://docs.docker.com/build/building/multi-stage/
+
+Solo de practica creamos un archivo en el directorio raiz::
+
+	# touch myfile
+
+Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
+
+	### STAGE 1: Build ###
+	FROM node AS build
+	WORKDIR  /usr/src/app
+	COPY package*.json ./
+
+	RUN npm install -g @angular/cli
+	RUN npm install
+	COPY . .
+	RUN ng build
+
+	### STAGE 2: Run ###
+	FROM nginx:1.17.1-alpine
+	COPY ./myfile /usr/share/nginx/html/
+	COPY --from=build /usr/src/app/dist/* /usr/share/nginx/html/
+
+
+Hacemos el docker build, para crear la imagen::
+
+	# docker build -t my_first_angular_apache:latest .
+	[+] Building 27.9s (16/16) FINISHED                                                                                    docker:default
+	 => [internal] load build definition from Dockerfile                                                                             0.0s
+	 => => transferring dockerfile: 359B                                                                                             0.0s
+	 => [internal] load metadata for docker.io/library/node:latest                                                                   4.6s
+	 => [internal] load metadata for docker.io/library/httpd:latest                                                                  4.6s
+	 => [internal] load .dockerignore                                                                                                0.0s
+	 => => transferring context: 2B                                                                                                  0.0s
+	 => [build 1/7] FROM docker.io/library/node:latest@sha256:64c46a664eccedec63941dab4027c178a36debe08a232d4f9d7da5aca91cff3d       0.0s
+	 => [internal] load build context                                                                                                1.0s
+	 => => transferring context: 2.11MB                                                                                              0.9s
+	 => CACHED [stage-1 1/3] FROM docker.io/library/httpd:latest@sha256:36c8c79f900108f0f09fd4148ad35ade57cba0dc19d13f3d15be24ce94e  0.0s
+	 => CACHED [build 2/7] WORKDIR  /usr/src/app                                                                                     0.0s
+	 => CACHED [build 3/7] COPY package*.json ./                                                                                     0.0s
+	 => CACHED [build 4/7] RUN npm install -g @angular/cli                                                                           0.0s
+	 => CACHED [build 5/7] RUN npm install                                                                                           0.0s
+	 => [build 6/7] COPY . .                                                                                                         5.6s
+	 => [build 7/7] RUN ng build                                                                                                    14.9s
+	 => [stage-1 2/3] COPY --from=build /usr/src/app/myfile /usr/local/apache2/htdocs/                                               0.0s
+	 => [stage-1 3/3] COPY --from=build /usr/src/app/dist/* /usr/local/apache2/htdocs/                                               0.0s
+	 => exporting to image                                                                                                           0.0s
+	 => => exporting layers                                                                                                          0.0s
+	 => => writing image sha256:bed6510ce7b501ea4af691980f3d2a69523f00296f922fa82e6bdb6a5b92505b                                     0.0s
+	 => => naming to docker.io/library/my_first_angular_apache:latest    
+
+Consultamos las imagenes creadas::
+
+	# docker images
+	REPOSITORY                TAG       IMAGE ID       CREATED          SIZE
+	my_first_angular_apache   latest    bed6510ce7b5   3 minutes ago    148MB
+	my_first_angular_prod     latest    25e3bb9e33a7   12 minutes ago   20.8MB
+	my_first_angular          latest    f414ea3ab6f7   40 minutes ago   1.95GB
+	<none>                    <none>    1e11445bf189   7 days ago       32.2MB
+	<none>                    <none>    c95c7b759e1e   7 days ago       188MB
+	<none>                    <none>    7383c266ef25   9 days ago       188MB
+	<none>                    <none>    060aed823995   3 years ago      943MB
+
+
+Creamos el contenedor desde la nueva imagen::
+
+		# docker run --rm --name my-angular-container-prod -d -p 8080:80 my_first_angular_prod
+		f97dd3ac0f68a58afb4b54276f2b56e02018ff3950b6a246169a1febc879ea82
+
+Consultamos el contenedor::
+
+	# docker ps
+	CONTAINER ID   IMAGE                     COMMAND              CREATED         STATUS         PORTS                  NAMES
+	d28894a9d938   my_first_angular_apache   "httpd-foreground"   2 minutes ago   Up 2 minutes   0.0.0.0:8080->80/tcp   my-angular-container-prod
+
+
+Si queremos ingresar al contenedor::
+
+	# docker exec -ti my-angular-container-prod bash
+	root@d28894a9d938:/usr/local/apache2# ls -l /usr/local/apache2/htdocs/
+	total 272
+	-rw-r--r-- 1 root root  12290 May  3 20:48 3rdpartylicenses.txt
+	-rw-r--r-- 1 root root    948 May  3 20:48 favicon.ico
+	-rw-r--r-- 1 root root    574 May  3 20:48 index.html
+	-rw-r--r-- 1 root root 212305 May  3 20:48 main.e1bc045029093818.js
+	-rw-r--r-- 1 root root      0 May  3 17:26 myfile
+	-rw-r--r-- 1 root root  33829 May  3 20:48 polyfills.f06b46307a0208ff.js
+	-rw-r--r-- 1 root root    906 May  3 20:48 runtime.d6e89d3624ab9ca0.js
+	-rw-r--r-- 1 root root      0 May  3 20:48 styles.ef46db3751d8e999.css
+
+
+
+	
+Por ultimo, nos vamos a un navegador y colocamos la IP en donde esta corriedo el contenedor con el puerto 8080, 
+ya como colocamos una imagen de nginx el puerto en listen es el 80 dentro del contenedor::
+
+	http://10.134.3.35:8080/
+	
+Listo...!!!
