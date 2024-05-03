@@ -1,0 +1,354 @@
+Creando aplicaciones Angular con Angular CLI
+=============================================
+
+Instalamos Nodejs y el npm
+
+Creamos el workspace::
+
+	# mkdir workspace-angular
+	# cd workspace-angular
+
+Instalación de Angular CLI
+-----------------------------
+
+Instalar Angular CLI usamos Node.JS junto con su administrador de paquetes Npm (Node Package Manager)::
+
+	# npm install -g @angular/cli
+
+Verificamos la version::
+
+	# ng version
+	
+Creando un simple proyecto para pruebas, pero primero limpiamos el CACHE::
+
+	# npm cache clear --force
+
+	# ng new my-first-angular
+
+El comando **ng new** nos creara los siguientes directorios::
+
+	$ ls
+	my-first-angular
+
+	$ ls -l my-first-angular/
+	total 916
+	-rw-r--r--   1 root root   2750 May  3 14:02 angular.json
+	drwxr-xr-x 605 root root  20480 May  3 14:03 node_modules
+	-rw-r--r--   1 root root   1049 May  3 14:02 package.json
+	-rw-r--r--   1 root root 874315 May  3 14:03 package-lock.json
+	-rw-r--r--   1 root root   1069 May  3 14:02 README.md
+	drwxr-xr-x   4 root root    101 May  3 14:02 src
+	-rw-r--r--   1 root root    263 May  3 14:02 tsconfig.app.json
+	-rw-r--r--   1 root root    901 May  3 14:02 tsconfig.json
+	-rw-r--r--   1 root root    273 May  3 14:02 tsconfig.spec.json
+	
+Si abrimos el archivo package.json, veremos todos los paquetes y sus versiones que se instalaron y que se encuentran en el directorio node_modules::
+
+	$ cat package.json
+	{
+	  "name": "my-first-angular",
+	  "version": "0.0.0",
+	  "scripts": {
+		"ng": "ng",
+		"start": "ng serve",
+		"build": "ng build",
+		"watch": "ng build --watch --configuration development",
+		"test": "ng test"
+	  },
+	  "private": true,
+	  "dependencies": {
+		"@angular/animations": "^16.2.0",
+		"@angular/common": "^16.2.0",
+		"@angular/compiler": "^16.2.0",
+		"@angular/core": "^16.2.0",
+		"@angular/forms": "^16.2.0",
+		"@angular/platform-browser": "^16.2.0",
+		"@angular/platform-browser-dynamic": "^16.2.0",
+		"@angular/router": "^16.2.0",
+		"rxjs": "~7.8.0",
+		"tslib": "^2.3.0",
+		"zone.js": "~0.13.0"
+	  },
+	  "devDependencies": {
+		"@angular-devkit/build-angular": "^16.2.10",
+		"@angular/cli": "^16.2.10",
+		"@angular/compiler-cli": "^16.2.0",
+		"@types/jasmine": "~4.3.0",
+		"jasmine-core": "~4.6.0",
+		"karma": "~6.4.0",
+		"karma-chrome-launcher": "~3.2.0",
+		"karma-coverage": "~2.2.0",
+		"karma-jasmine": "~5.1.0",
+		"karma-jasmine-html-reporter": "~2.1.0",
+		"typescript": "~5.1.3"
+	  }
+	}
+
+Ejecuntando la aplicación con Angular CLI
+-------------------------------------------
+
+Para iniciar un servidor local usando Angular CLI, usamos el comando ng serve::
+
+	# ng serve
+	â Browser application bundle generation complete.
+
+	Initial Chunk Files   | Names         |  Raw Size
+	vendor.js             | vendor        |   2.35 MB |
+	polyfills.js          | polyfills     | 332.07 kB |
+	styles.css, styles.js | styles        | 229.36 kB |
+	main.js               | main          |  48.35 kB |
+	runtime.js            | runtime       |   6.53 kB |
+
+						  | Initial Total |   2.95 MB
+
+	Build at: 2024-05-03T19:35:04.498Z - Hash: 606250fb8ae3722f - Time: 12620ms
+
+	** Angular Live Development Server is listening on localhost:4200, open your browser on http://localhost:4200/ **
+
+
+	â Compiled successfully.
+	â Browser application bundle generation complete.
+
+	5 unchanged chunks
+
+	Build at: 2024-05-03T19:35:04.990Z - Hash: 606250fb8ae3722f - Time: 330ms
+
+	â Compiled successfully.
+	
+Como vimos anteriormente el servicio se levanto en el puerto 4200 de local host, ahora vamos a cambiar la IP de escucha y el puerto::
+
+	# ng serve --host 0.0.0.0 --port 80
+
+	Warning: This is a simple server for use in testing or debugging Angular applications
+	locally. It hasn't been reviewed for security issues.
+
+	Binding this server to an open connection can result in compromising your application or
+	computer. Using a different host than the one passed to the "--host" flag might result in
+	websocket connection issues. You might need to use "--disable-host-check" if that's the
+	case.
+
+	â Browser application bundle generation complete.
+
+	Initial Chunk Files   | Names         |  Raw Size
+	vendor.js             | vendor        |   2.35 MB |
+	polyfills.js          | polyfills     | 332.07 kB |
+	styles.css, styles.js | styles        | 229.36 kB |
+	main.js               | main          |  48.35 kB |
+	runtime.js            | runtime       |   6.53 kB |
+
+						  | Initial Total |   2.95 MB
+
+	Build at: 2024-05-03T19:37:32.021Z - Hash: c1a212dd2b9af15b - Time: 7165ms
+
+	** Angular Live Development Server is listening on 0.0.0.0:80, open your browser on http://localhost:80/ **
+
+
+	â Compiled successfully.
+
+
+Build del proyecto
+----------------------
+
+ng serve hace un gran trabajo al proporcionar un servidor web local, pero esto es solo para desarrollo.
+Necesitaremos hospedar la aplicación en otro servidor y para eso hacemos un build del proyecto, es decir compilar, comprimir y empaquetar.
+
+Para generar un build para producción, podemos ejecutar::
+
+	# ng build --prod
+
+o::
+	
+	# ng build
+	â Browser application bundle generation complete.
+	â Copying assets complete.
+	â Index html generation complete.
+
+	Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+	main.4f35e316a07c6c38.js      | main          | 207.33 kB |                56.40 kB
+	polyfills.18bdebce9c7ddf4a.js | polyfills     |  33.04 kB |                10.64 kB
+	runtime.219646590b153ac0.js   | runtime       | 910 bytes |               511 bytes
+	styles.ef46db3751d8e999.css   | styles        |   0 bytes |                       -
+
+								  | Initial Total | 241.26 kB |                67.54 kB
+
+	Build at: 2024-05-03T19:43:38.185Z - Hash: ddece23c9924d02a - Time: 18498ms
+
+	
+Eso nos crea la carpeta "/dist" y el contenido es el que vamos a copiar en nuestro servidor de Web APP en /var/www/html::
+
+	# ls -ltr
+	total 916
+	-rw-r--r--   1 root root   1069 May  3 14:02 README.md
+	-rw-r--r--   1 root root    273 May  3 14:02 tsconfig.spec.json
+	-rw-r--r--   1 root root    901 May  3 14:02 tsconfig.json
+	-rw-r--r--   1 root root    263 May  3 14:02 tsconfig.app.json
+	-rw-r--r--   1 root root   1049 May  3 14:02 package.json
+	-rw-r--r--   1 root root   2750 May  3 14:02 angular.json
+	drwxr-xr-x   4 root root    101 May  3 14:02 src
+	-rw-r--r--   1 root root 874315 May  3 14:03 package-lock.json
+	drwxr-xr-x 605 root root  20480 May  3 14:03 node_modules
+	drwxr-xr-x   3 root root     30 May  3 15:43 dist
+
+
+Crear una imagen de Docker tipo DEV
++++++++++++++++++++++++++++
+
+Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
+
+	# vi Dockerfile
+	### STAGE 1: Build ###
+	FROM node AS build
+	WORKDIR  /usr/src/app
+	COPY package*.json ./
+
+	RUN npm install -g @angular/cli
+
+	RUN npm install
+	COPY . .
+
+	### STAGE 2: Run ###
+	CMD ["ng", "serve", "--host=0.0.0.0", "--disable-host-check"]
+
+Hacemos el docker build, para crear la imagen::
+
+	# docker build -t my_first_angular:latest .
+	[+] Building 55.4s (11/11) FINISHED                                                                                    docker:default
+	 => [internal] load build definition from Dockerfile                                                                             0.0s
+	 => => transferring dockerfile: 283B                                                                                             0.0s
+	 => [internal] load metadata for docker.io/library/node:latest                                                                   0.9s
+	 => [internal] load .dockerignore                                                                                                0.0s
+	 => => transferring context: 2B                                                                                                  0.0s
+	 => [1/6] FROM docker.io/library/node:latest@sha256:64c46a664eccedec63941dab4027c178a36debe08a232d4f9d7da5aca91cff3d             0.0s
+	 => [internal] load build context                                                                                                6.0s
+	 => => transferring context: 469.72MB                                                                                            6.0s
+	 => CACHED [2/6] WORKDIR  /usr/src/app                                                                                           0.0s
+	 => [3/6] COPY package*.json ./                                                                                                  0.9s
+	 => [4/6] RUN npm install -g @angular/cli                                                                                       17.2s
+	 => [5/6] RUN npm install                                                                                                       19.6s
+	 => [6/6] COPY . .                                                                                                               5.5s
+	 => exporting to image                                                                                                           5.2s
+	 => => exporting layers                                                                                                          5.2s
+	 => => writing image sha256:2ccc8a9fcd07223858e2553828625f8ea52685155d2c476579ed7ea6970ab574                                     0.0s
+	 => => naming to docker.io/library/my_first_angular:latest  
+ 
+
+Consultamos las imagenes creadas::
+
+	# docker images
+	REPOSITORY         TAG       IMAGE ID       CREATED         SIZE
+	my_first_angular   latest    2ccc8a9fcd07   2 minutes ago   1.95GB
+	<none>             <none>    1e11445bf189   7 days ago      32.2MB
+	<none>             <none>    c95c7b759e1e   7 days ago      188MB
+	<none>             <none>    7383c266ef25   9 days ago      188MB
+	<none>             <none>    060aed823995   3 years ago     943MB
+	
+Creamos el contenedor desde la nueva imagen::
+
+	# docker run --rm --name my-angular-container -d -p 8080:4200 my_first_angular
+	ee54a035fef29ed028f4eba1cdd69bdb722d7dbf54c5c861aebf273d540fc38f
+
+	
+Consultamos el contenedor::
+
+	# docker ps
+	CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS          PORTS                    NAMES
+	ee54a035fef2   my_first_angular   "docker-entrypoint.sâ¦"   43 seconds ago   Up 42 seconds   0.0.0.0:8080->4200/tcp   my-angular-container
+
+Si queremos ingresar al contenedor::
+
+	# docker exec -ti my-angular-container sh
+	
+Por ultimo, nos vamos a un navegador y colocamos la IP en donde esta corriedo el contenedor con el puerto 8080::
+
+	http://10.134.3.35:8080/
+	
+Listo...!!!
+
+Crear una imagen de Docker tipo PROD
++++++++++++++++++++++++++++
+
+Con este contenedor vamos aplicar las buenas practicas y es que vamos a compilar el codigo fuente y luego lo agregamos, para eso vamos a utilizar la tecnica de
+Multi Stage, en donde vamos a compilar en una base node y luego ese contenido lo copiamos en una base de nginx. para mayor información podemos ver el siguiente link oficial.
+
+https://docs.docker.com/build/building/multi-stage/
+
+Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
+
+	### STAGE 1: Build ###
+	FROM node AS build
+	WORKDIR  /usr/src/app
+	COPY package*.json ./
+
+	RUN npm install -g @angular/cli
+	RUN npm install
+	COPY . .
+	RUN ng build
+
+	### STAGE 2: Run ###
+	FROM nginx:1.17.1-alpine
+	COPY --from=build /usr/src/app/dist/* /usr/share/nginx/html/
+
+
+Hacemos el docker build, para crear la imagen::
+
+	# docker build -t my_first_angular_prod:latest .
+	[+] Building 23.4s (15/15) FINISHED                                                                                    docker:default
+	 => [internal] load build definition from Dockerfile                                                                             0.0s
+	 => => transferring dockerfile: 313B                                                                                             0.0s
+	 => [internal] load metadata for docker.io/library/nginx:1.17.1-alpine                                                           0.7s
+	 => [internal] load metadata for docker.io/library/node:latest                                                                   0.7s
+	 => [internal] load .dockerignore                                                                                                0.0s
+	 => => transferring context: 2B                                                                                                  0.0s
+	 => CACHED [stage-1 1/2] FROM docker.io/library/nginx:1.17.1-alpine@sha256:17bd1698318e9c0f9ba2c5ed49f53d690684dab7fe3e8019b855  0.0s
+	 => [build 1/7] FROM docker.io/library/node:latest@sha256:64c46a664eccedec63941dab4027c178a36debe08a232d4f9d7da5aca91cff3d       0.0s
+	 => [internal] load build context                                                                                                1.0s
+	 => => transferring context: 2.08MB                                                                                              0.9s
+	 => CACHED [build 2/7] WORKDIR  /usr/src/app                                                                                     0.0s
+	 => CACHED [build 3/7] COPY package*.json ./                                                                                     0.0s
+	 => CACHED [build 4/7] RUN npm install -g @angular/cli                                                                           0.0s
+	 => CACHED [build 5/7] RUN npm install                                                                                           0.0s
+	 => [build 6/7] COPY . .                                                                                                         5.3s
+	 => [build 7/7] RUN ng build                                                                                                    14.8s
+	 => [stage-1 2/2] COPY --from=build /usr/src/app/dist/* /usr/share/nginx/html/		                                             0.1s
+	 => exporting to image                                                                                                           0.0s
+	 => => exporting layers                                                                                                          0.0s
+	 => => writing image sha256:63d69ebb8793a94539896f4680746c8ce6bc9545503231a9e339b44b3a29316f                                     0.0s
+	 => => naming to docker.io/library/my_first_angular_prod:latest  
+
+Consultamos las imagenes creadas::
+
+	# docker images
+	REPOSITORY              TAG       IMAGE ID       CREATED              SIZE
+	my_first_angular_prod   latest    63d69ebb8793   About a minute ago   20.8MB
+	my_first_angular        latest    f414ea3ab6f7   16 minutes ago       1.95GB
+	<none>                  <none>    1e11445bf189   7 days ago           32.2MB
+	<none>                  <none>    c95c7b759e1e   7 days ago           188MB
+	<none>                  <none>    7383c266ef25   9 days ago           188MB
+	<none>                  <none>    060aed823995   3 years ago          943MB
+
+
+Creamos el contenedor desde la nueva imagen::
+
+	# docker run --rm --name my-angular-container-prod -d -p 8080:80 my_first_angular_prod
+	f97dd3ac0f68a58afb4b54276f2b56e02018ff3950b6a246169a1febc879ea82
+
+Consultamos el contenedor::
+
+	# docker ps
+	CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                  NAMES
+	ef349fa63391   my_first_angular_prod   "nginx -g 'daemon ofâ¦"   34 seconds ago   Up 33 seconds   0.0.0.0:8080->80/tcp   my-angular-container-prod
+
+
+Si queremos ingresar al contenedor::
+
+	# docker exec -ti my-angular-container-prod sh
+	/ # netstat -nat
+	Active Internet connections (servers and established)
+	Proto Recv-Q Send-Q Local Address           Foreign Address         State
+	tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN
+	/ #
+
+	
+Por ultimo, nos vamos a un navegador y colocamos la IP en donde esta corriedo el contenedor con el puerto 8080::
+
+
