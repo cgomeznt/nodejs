@@ -191,7 +191,7 @@ Eso nos crea la carpeta "/dist" y el contenido es el que vamos a copiar en nuest
 
 
 Crear una imagen de Docker tipo DEV
-+++++++++++++++++++++++++++
+------------------------------------------------------
 
 Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
 
