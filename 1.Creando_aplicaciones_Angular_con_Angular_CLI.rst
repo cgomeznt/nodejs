@@ -190,6 +190,7 @@ Eso nos crea la carpeta "/dist" y el contenido es el que vamos a copiar en nuest
 	drwxr-xr-x   3 root root     30 May  3 15:43 dist
 
 
+
 Crear una imagen de Docker tipo DEV
 +++++++++++++++++++++++++++
 
