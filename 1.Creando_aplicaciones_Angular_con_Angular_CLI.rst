@@ -190,7 +190,6 @@ Eso nos crea la carpeta "/dist" y el contenido es el que vamos a copiar en nuest
 	drwxr-xr-x   3 root root     30 May  3 15:43 dist
 
 
-
 Crear una imagen de Docker tipo DEV
 +++++++++++++++++++++++++++
 
@@ -266,7 +265,7 @@ Por ultimo, nos vamos a un navegador y colocamos la IP en donde esta corriedo el
 Listo...!!!
 
 Crear una imagen de Docker tipo PROD con nginx
-+++++++++++++++++++++++++++
+------------------------------------------------------
 
 Con este contenedor vamos aplicar las buenas practicas y es que vamos a compilar el codigo fuente y luego lo agregamos, para eso vamos a utilizar la tecnica de
 Multi Stage, en donde vamos a compilar en una base node y luego ese contenido lo copiamos en una base de nginx. para mayor información podemos ver el siguiente link oficial.
@@ -380,8 +379,8 @@ Listo...!!!
 
 
 
-Crear una imagen de Docker tipo PROD con nginx
-+++++++++++++++++++++++++++
+Crear una imagen de Docker tipo PROD con Apache
+------------------------------------------------------
 
 Con este contenedor vamos aplicar las buenas practicas y es que vamos a compilar el codigo fuente y luego lo agregamos, para eso vamos a utilizar la tecnica de
 Multi Stage, en donde vamos a compilar en una base node y luego ese contenido lo copiamos en una base de nginx. para mayor información podemos ver el siguiente link oficial.
@@ -406,8 +405,8 @@ Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
 
 	### STAGE 2: Run ###
 	FROM nginx:1.17.1-alpine
-	COPY ./myfile /usr/share/nginx/html/
-	COPY --from=build /usr/src/app/dist/* /usr/share/nginx/html/
+	COPY ./myfile /usr/local/apache2/htdocs/ 
+	COPY --from=build /usr/src/app/dist/* /usr/local/apache2/htdocs/ 
 
 
 Hacemos el docker build, para crear la imagen::
@@ -452,7 +451,7 @@ Consultamos las imagenes creadas::
 
 Creamos el contenedor desde la nueva imagen::
 
-		# docker run --rm --name my-angular-container-prod -d -p 8080:80 my_first_angular_prod
+		# docker run --rm --name my_first_angular_apache -d -p 8080:80 my_first_angular_prod
 		f97dd3ac0f68a58afb4b54276f2b56e02018ff3950b6a246169a1febc879ea82
 
 Consultamos el contenedor::
@@ -464,7 +463,7 @@ Consultamos el contenedor::
 
 Si queremos ingresar al contenedor::
 
-	# docker exec -ti my-angular-container-prod bash
+	# docker exec -ti my_first_angular_apache bash
 	root@d28894a9d938:/usr/local/apache2# ls -l /usr/local/apache2/htdocs/
 	total 272
 	-rw-r--r-- 1 root root  12290 May  3 20:48 3rdpartylicenses.txt
