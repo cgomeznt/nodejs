@@ -404,7 +404,7 @@ Creamos el **Dockerfile** dentro del directorio raiz de la aplicación::
 	RUN ng build
 
 	### STAGE 2: Run ###
-	FROM nginx:1.17.1-alpine
+	FROM httpd
 	COPY ./myfile /usr/local/apache2/htdocs/ 
 	COPY --from=build /usr/src/app/dist/* /usr/local/apache2/htdocs/ 
 
