@@ -20,6 +20,10 @@ Corre el siguiente comando para descargar NVM. Cambia la versión según sea nec
 
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
+o::
+
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
 Este comando instala nvm en un nuevo directorio bajo tu usuario llamado /.nvm
 
 Este comando también agrega lo siguiente a tu archivo .bashrc::
@@ -40,7 +44,9 @@ Confirma que tu directorio local .nvm está configurado::
 Edita tu .bash_profile y agrega la siguiente línea::
 
   source ~/.bashrc
-  Actualiza tu .bash_profile para que puedas usar esta nueva versión de nvm.
+
+Actualiza tu .bash_profile para que puedas usar esta nueva versión de nvm::
+
   . ~/.bash_profile
 
 Corre el siguiente comando para probar si nvm está instalado::
