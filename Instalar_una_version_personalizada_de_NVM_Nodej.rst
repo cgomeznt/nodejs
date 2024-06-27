@@ -90,4 +90,15 @@ Asegúrate de cambiar el número de versión a la versión que has instalado. Es
 Probar Node.js
 +++++++++++++++
 
+Instalación de Angular CLI
+++++++++++++++++++++++++++++
+
+Instalar Angular CLI usamos Node.JS junto con su administrador de paquetes Npm (Node Package Manager)::
+
+	# npm install -g @angular/cli
+
+Verificamos la version::
+
+	# ng version
+
 
