@@ -52,7 +52,7 @@ Actualiza tu .bash_profile para que puedas usar esta nueva versión de nvm::
 Corre el siguiente comando para probar si nvm está instalado::
 
   nvm --version
-  0.39.0
+  0.39.7
 
 Instalar Node.js
 +++++++++++++++++++
