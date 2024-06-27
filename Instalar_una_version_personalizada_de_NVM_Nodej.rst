@@ -87,8 +87,6 @@ Asegúrate de cambiar el número de versión a la versión que has instalado. Es
   nvm alias default v12.22.7
   default -> v12.22.7
 
-Probar Node.js
-+++++++++++++++
 
 Instalación de Angular CLI
 ++++++++++++++++++++++++++++
@@ -100,5 +98,9 @@ Instalar Angular CLI usamos Node.JS junto con su administrador de paquetes Npm (
 Verificamos la version::
 
 	# ng version
+
+
+Probar Node.js
++++++++++++++++
 
 
