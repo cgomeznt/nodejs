@@ -65,17 +65,17 @@ Revisa qué versiones de Node.js están disponibles::
 
 Instala cualquier versión de Node.js que desees::
 
-  nvm install v12.22.7
+  nvm install v20.15.0
 
 Establece tu versión actual de node a tu nueva versión::
 
-  nvm use v12.22.7
-  Now using node v12.22.7 (npm v)
+  nvm use v20.15.0
+  Now using node v20.15.0 (npm v)
 
 Comprueba qué versión de Node.js se está ejecutando ingresando lo siguiente::
 
   node -v
-  v12.18.3
+  v20.15.0
 
 Establecer la versión predeterminada de Node.js
 ++++++++++++++++++++++++++++++++++++++++++++++++++
